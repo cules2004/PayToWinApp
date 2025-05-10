@@ -1,24 +1,26 @@
 // screens/HomeScreen.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';  
 import { Image } from 'react-native';
 import { GradientText } from './Gradient';      
-// const HomeScreen = () => {
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.text}>Chào mừng đến với PayToWin!</Text>
-//     </View>
-//   );
-// };
-const HomeScreen = () => {
+import Spinner from '../component/Spinner';
+
+const HomeScreen = ({ navigation }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('GettingStarted'); // Switch after 3 seconds
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
   return (
     <LinearGradient
       colors={['#1A1A2E', '#16213E']}
       style={styles.container}
     >
       <Image
-        source={require('C:/Users/admin/PayToWinApp/assets/Images/splashscreen.png')}
+        source={require('C:/Users/admin/PayToWinApp/assets/Images/4493f57208853f34c4d903e07ef90afc.png')}
         style={styles.characterImage}
         resizeMode="contain"
       />
@@ -34,8 +36,9 @@ const HomeScreen = () => {
           end={{ x: 1, y: 0 }}
         />
         <Text style={styles.descriptionText}>
-        Chơi game đỉnh nạp cực xịn cùng PayToWinApp!
+        By Gamer, For Gamer
         </Text>
+        <Spinner size={60} />
       </View>
     </LinearGradient>
   );
@@ -48,11 +51,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   characterImage: {
-    position: 'absolute',
-    width: 587,
-    height: 430.26,
-    left: -125,
-    top: 248,
+    width: 650,
+    height: 480,
+    alignSelf: 'center',
   },
   textContainer: {
     position: 'absolute',
