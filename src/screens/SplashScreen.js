@@ -3,16 +3,12 @@ import React, {useEffect} from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GradientText } from './Gradient'; 
+import HomeScreen from './HomeScreen';
+import Spinner from '../component/Spinner';
 
-// const SplashScreen = ({ navigation }) => {
-//   const title = "PayToWin"
-//   // useEffect(() => {
-//   //   const timer = setTimeout(() => {
-//   //     navigation.replace('Splash2'); // Chuyển sang SplashScreen2
-//   //   }, 3000);
-//   //   return () => clearTimeout(timer); // Dọn dẹp timer
-//   // }, [navigation]);
-//   return (
+
+//   
+// return (
 //     <LinearGradient
 //       colors={['#0A0C2B', '#2A2D5D']}
 //       style={styles.container}
@@ -23,26 +19,31 @@ import { GradientText } from './Gradient';
 //     </LinearGradient>
 //   );
 // };
+
+
 const SplashScreen = ({ navigation }) => {
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('Home'); // Chuyển sang HomeScreen
+    }, 3000);
+
+    return () => clearTimeout(timer); // Dọn dẹp timer
+  }, [navigation]);
+
   return (
     <View
       style={styles.container}
     >
-      <GradientText text = "PayToWin" style = {{fontSize: 48}} />
+      <GradientText text = "PayToWin" style = {styles.title} />
       {/* <Text style={styles.title}>{title}</Text> */}
     {/* <GradientText text = {title} style = {styles.title} /> */}
-      <ActivityIndicator size="large" color="#fff" style={styles.spinner} />
+      <Spinner size={120} />
     </View>
   );
 };
-// const SplashScreen2 = ({ navigation }) => {
-//   return (
-//     <View style = {styles.container}>
-//       <GradientText text = "PayToWin" style = {styles.title} />
-//       <ActivityIndicator size="large" color="#fff" style={styles.spinner} />
-//     </View>
-//   );
-// };
+
+
 
 const styles = StyleSheet.create({
   container: {
