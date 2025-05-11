@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import GradientText from '../component/GradientText';
 
-const GettingStartedScreen = () => {
+const GettingStartedScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -14,7 +15,11 @@ const GettingStartedScreen = () => {
         style={styles.characterImage}
         resizeMode="contain"
       />
-      <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('Login')}
+      >
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
     </View>

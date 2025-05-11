@@ -2,7 +2,7 @@
 import React, {useEffect} from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { GradientText } from './Gradient'; 
+import GradientText from '../component/GradientText';
 import HomeScreen from './HomeScreen';
 import Spinner from '../component/Spinner';
 

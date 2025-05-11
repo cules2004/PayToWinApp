@@ -32,30 +32,8 @@
 // export default App;
 // src/App.js
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import SplashScreen from './screens/SplashScreen';
-import HomeScreen from './screens/HomeScreen';
-import GettingStartedScreen from './screens/GettingStartedScreen';
+import AppNavigator from './navigation/AppNavigator';
 
-const Stack = createStackNavigator();
-
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Splash"
-        screenOptions={{
-          headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
-        }}
-      >
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="GettingStarted" component={GettingStartedScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
-
-export default App;
+export default function App() {
+  return <AppNavigator />;
+}

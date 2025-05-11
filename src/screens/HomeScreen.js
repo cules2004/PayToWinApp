@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';  
 import { Image } from 'react-native';
-import { GradientText } from './Gradient';      
+import GradientText from '../component/GradientText';      
 import Spinner from '../component/Spinner';
 
 const HomeScreen = ({ navigation }) => {
