@@ -8,6 +8,8 @@ import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import VerifyEmailScreen from '../screens/VerifyEmailScreen';
 import HomePageScreen from '../screens/HomePageScreen';
+import AccountScreen from '../screens/AccountScreen';
+import ManagePaymentScreen from '../screens/ManagePaymentScreen';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +30,8 @@ export default function AppNavigator() {
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
         <Stack.Screen name="HomePage" component={HomePageScreen} />
+        <Stack.Screen name="AccountScreen" component={AccountScreen} />
+        <Stack.Screen name="ManagePaymentScreen" component={ManagePaymentScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

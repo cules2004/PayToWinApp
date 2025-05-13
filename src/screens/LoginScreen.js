@@ -65,7 +65,7 @@ const LoginScreen = ({ navigation }) => {
           setError('Login information is incorrect.');
         } else {
           setError('');
-          navigation.replace('HomePage');
+          navigation.replace('HomePage', { email });
         }
       }}>
         <Text style={styles.signInButtonText}>Sign in</Text>
