@@ -56,6 +56,7 @@ const AccountScreen = ({ navigation, route }) => {
         onManagePayment={() => { setShowProfile(false); navigation.navigate('ManagePaymentScreen'); }}
         activeTab="account"
       />
+      {/* <Footer onNavigate={key => { }} /> */}
     </View>
   );
 };

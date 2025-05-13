@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import NavigationBar from '../component/NavigationBar';
 import SearchBar from '../component/SearchBar';
 import ProfileModal from '../component/ProfileModal';
+import Carousel from '../component/Carousel';
 
 const ManagePaymentScreen = ({ navigation, route }) => {
   const [search, setSearch] = useState('');
@@ -44,6 +45,7 @@ const ManagePaymentScreen = ({ navigation, route }) => {
       />
       <SearchBar value={search} onChangeText={setSearch} />
       <View style={styles.content}>
+        <Carousel />
         <Text style={styles.placeholder}>Manage Payment Page Content Here</Text>
       </View>
       <ProfileModal
@@ -56,6 +58,7 @@ const ManagePaymentScreen = ({ navigation, route }) => {
         onManagePayment={() => setShowProfile(false)}
         activeTab="payment"
       />
+      {/* <Footer onNavigate={key => { }} /> */}
     </View>
   );
 };
