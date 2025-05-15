@@ -5,8 +5,8 @@ import GradientText from '../component/GradientText';
 import ProfileModal from '../component/ProfileModal';
 import NavigationBar from '../component/NavigationBar';
 import SearchBar from '../component/SearchBar';
-import Footer from '../component/Footer';
 import Carousel from '../component/Carousel';
+import GameList from '../component/GameList';
 
 const HomePageScreen = ({ route, navigation }) => {
   const [showNav, setShowNav] = useState(true);
@@ -27,16 +27,6 @@ const HomePageScreen = ({ route, navigation }) => {
     setRandomId(id);
   }, []);
 
-  const handleScroll = (event) => {
-    const currentOffset = event.nativeEvent.contentOffset.y;
-    if (currentOffset > lastOffset.current && currentOffset > 20) {
-      setShowNav(false); // Hide navbar when scrolling down
-    } else if (currentOffset < lastOffset.current) {
-      setShowNav(true); // Show navbar when scrolling up
-    }
-    lastOffset.current = currentOffset;
-  };
-
   const handleLogout = () => {
     Alert.alert(
       'Confirm Logout',
@@ -52,24 +42,30 @@ const HomePageScreen = ({ route, navigation }) => {
     );
   };
 
+  const renderContent = () => (
+    <View style={styles.contentContainer}>
+      <Text style={styles.featureTitle}>Featured</Text>
+      <Carousel />
+      <View style={styles.gameListContainer}>
+        <GameList />
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      {showNav && (
-        <>
-          <NavigationBar onProfilePress={() => setShowProfile(true)} onLogoPress={() => navigation.replace('HomePage')} />
-          <SearchBar value={search} onChangeText={setSearch} />
-        </>
-      )}
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ padding: 16 }}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
+        stickyHeaderIndices={[0, 1]}
       >
+        <NavigationBar onProfilePress={() => setShowProfile(true)} onLogoPress={() => navigation.replace('HomePage')} />
+        <SearchBar value={search} onChangeText={setSearch} />
+        <Text style={styles.featureTitle}>Featured</Text>
         <Carousel />
-        {/* Add your homepage content here */}
-        
-        {/* ...more content... */}
+        <View style={styles.gameListContainer}>
+          <GameList />
+        </View>
       </ScrollView>
       <ProfileModal
         visible={showProfile}
@@ -82,7 +78,6 @@ const HomePageScreen = ({ route, navigation }) => {
         activeTab={navigation?.getState?.()?.routes?.[navigation.getState().index]?.name === 'AccountScreen' ? 'account' :
                   navigation?.getState?.()?.routes?.[navigation.getState().index]?.name === 'ManagePaymentScreen' ? 'payment' : undefined}
       />
-      {/* <Footer onNavigate={key => { }} /> */}
     </View>
   );
 };
@@ -91,6 +86,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#181A2A',
+    position: 'relative',
+  },
+  flatListContent: {
+    padding: 16,
+  },
+  contentContainer: {
+    flex: 1,
+  },
+  featureTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    marginLeft: 8,
+    color: '#fff',
+  },
+  gameListContainer: {
+    marginTop: 20,
   },
 });
 

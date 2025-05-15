@@ -6,12 +6,12 @@ const ITEM_WIDTH = width * 0.8; // 80% of screen width
 
 // Danh sách 6 ảnh placeholder từ Unsplash
 const images = [
-  { id: '1', local: require('../../assets/Images/Carousel1.jpg') },
-  { id: '2', local: require('../../assets/Images/Carousel2.jpg') },
-  { id: '3', local: require('../../assets/Images/Carousel3.jpg') },
-  { id: '4', local: require('../../assets/Images/Carousel4.jpg') },
-  { id: '5', local: require('../../assets/Images/Carousel5.jpg') },
-  { id: '6', local: require('../../assets/Images/Carousel6.jpg') },
+  { id: '1', local: require('../../assets/Images/Carousel1.jpg'), logo: require('../../assets/Images/Logo1.jpg') },
+  { id: '2', local: require('../../assets/Images/Carousel2.jpg'), logo: require('../../assets/Images/Logo2.jpg') },
+  { id: '3', local: require('../../assets/Images/Carousel3.jpg'), logo: require('../../assets/Images/Logo3.jpg') },
+  { id: '4', local: require('../../assets/Images/Carousel4.jpg'), logo: require('../../assets/Images/Logo4.jpg') },
+  { id: '5', local: require('../../assets/Images/Carousel5.jpg'), logo: require('../../assets/Images/Logo5.jpg') },
+  { id: '6', local: require('../../assets/Images/Carousel6.jpg'), logo: require('../../assets/Images/Logo6.jpg') },
 ];
 
 const Carousel = () => {
@@ -55,14 +55,21 @@ const Carousel = () => {
   // Render dấu chấm (pagination dots)
   const renderDots = () => (
     <View style={styles.dotsContainer}>
-      {images.map((_, index) => (
+      {images.map((item, index) => (
         <View
           key={index}
           style={[
-            styles.dot,
-            { backgroundColor: activeIndex === index ? '#1EB1FC' : '#8B9CB6' },
+            styles.gameBox,
+            activeIndex === index && styles.activeGameBox,
+            { borderColor: activeIndex === index ? '#1EB1FC' : '#8B9CB6' },
           ]}
-        />
+        >
+          <Image 
+            source={item.logo} 
+            style={styles.gameLogo}
+            resizeMode="contain"
+          />
+        </View>
       ))}
     </View>
   );
@@ -114,14 +121,40 @@ const styles = StyleSheet.create({
   },
   dotsContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     marginTop: 10,
+    width: '100%',
+    paddingHorizontal: 15,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 4,
+  gameBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    borderWidth: 2,
+    backgroundColor: 'rgba(139, 156, 182, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 4,
+    transition: 'all 0.3s ease',
+  },
+  activeGameBox: {
+    width: 55,
+    height: 55,
+    transform: [{ scale: 1.2 }],
+    backgroundColor: 'rgba(30, 177, 252, 0.15)',
+    borderWidth: 3,
+    shadowColor: '#1EB1FC',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  gameLogo: {
+    width: '100%',
+    height: '100%',
   },
 });
 
