@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from '../screens/SplashScreen';
 import HomeScreen from '../screens/HomeScreen';
 import GettingStartedScreen from '../screens/GettingStartedScreen';
@@ -10,17 +10,18 @@ import VerifyEmailScreen from '../screens/VerifyEmailScreen';
 import HomePageScreen from '../screens/HomePageScreen';
 import AccountScreen from '../screens/AccountScreen';
 import ManagePaymentScreen from '../screens/ManagePaymentScreen';
+import TopUpScreen from '../screens/TopUpScreen';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
-export default function AppNavigator() {
+const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Splash"
         screenOptions={{
           headerShown: false,
-          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+          contentStyle: { backgroundColor: '#181A2A' }
         }}
       >
         <Stack.Screen name="Splash" component={SplashScreen} />
@@ -32,7 +33,10 @@ export default function AppNavigator() {
         <Stack.Screen name="HomePage" component={HomePageScreen} />
         <Stack.Screen name="AccountScreen" component={AccountScreen} />
         <Stack.Screen name="ManagePaymentScreen" component={ManagePaymentScreen} />
+        <Stack.Screen name="TopUp" component={TopUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-} 
+};
+
+export default AppNavigator; 

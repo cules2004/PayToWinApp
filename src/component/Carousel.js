@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { View, Image, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, FlatList, Dimensions, Animated } from 'react-native';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width * 0.8; // 80% of screen width
@@ -18,6 +18,7 @@ const Carousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
   const flatListRef = useRef(null);
+  const scaleAnims = useRef(images.map(() => new Animated.Value(1))).current;
 
   // Auto-reverse logic
   useEffect(() => {
@@ -38,6 +39,18 @@ const Carousel = () => {
     return () => clearInterval(interval);
   }, [direction]);
 
+  // Animate scale when active index changes
+  useEffect(() => {
+    scaleAnims.forEach((anim, index) => {
+      Animated.spring(anim, {
+        toValue: activeIndex === index ? 1.2 : 1,
+        useNativeDriver: true,
+        tension: 50,
+        friction: 7,
+      }).start();
+    });
+  }, [activeIndex]);
+
   // Xử lý khi vuốt để cập nhật chỉ số ảnh hiện tại
   const onScroll = (event) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
@@ -52,16 +65,19 @@ const Carousel = () => {
     </View>
   );
 
-  // Render dấu chấm (pagination dots)
+  // Updated renderDots function
   const renderDots = () => (
     <View style={styles.dotsContainer}>
       {images.map((item, index) => (
-        <View
+        <Animated.View
           key={index}
           style={[
             styles.gameBox,
             activeIndex === index && styles.activeGameBox,
-            { borderColor: activeIndex === index ? '#1EB1FC' : '#8B9CB6' },
+            { 
+              borderColor: activeIndex === index ? '#1EB1FC' : '#8B9CB6',
+              transform: [{ scale: scaleAnims[index] }],
+            },
           ]}
         >
           <Image 
@@ -69,7 +85,7 @@ const Carousel = () => {
             style={styles.gameLogo}
             resizeMode="contain"
           />
-        </View>
+        </Animated.View>
       ))}
     </View>
   );
@@ -135,12 +151,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 4,
-    transition: 'all 0.3s ease',
   },
   activeGameBox: {
     width: 55,
     height: 55,
-    transform: [{ scale: 1.2 }],
     backgroundColor: 'rgba(30, 177, 252, 0.15)',
     borderWidth: 3,
     shadowColor: '#1EB1FC',
