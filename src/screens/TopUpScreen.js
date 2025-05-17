@@ -98,7 +98,6 @@ const TopUpScreen = () => {
     }).format(price);
   };
 
-  // Helper để render grid 2 cột bằng View
   const renderPackageGrid = (packages, numColumns = 2) => {
     const data = [...packages];
     if (data.length % numColumns !== 0) {
@@ -109,13 +108,13 @@ const TopUpScreen = () => {
       rows.push(data.slice(i, i + numColumns));
     }
     return rows.map((row, rowIndex) => (
-      <View key={rowIndex} style={{ flexDirection: 'row' }}>
+      <View key={`row-${rowIndex}`} style={{ flexDirection: 'row' }}>
         {row.map((pkg, colIndex) =>
           pkg.empty ? (
             <View key={`empty-${rowIndex}-${colIndex}`} style={[styles.packageCard, { backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0, borderWidth: 0 }]} />
           ) : (
             <TouchableOpacity
-              key={pkg.id.toString()}
+              key={`package-${pkg.id}`}
               style={[
                 styles.packageCard,
                 selectedPackage?.id === pkg.id && styles.packageCardSelected
@@ -123,7 +122,11 @@ const TopUpScreen = () => {
               onPress={() => handlePackageSelect(pkg)}
               activeOpacity={0.85}
             >
-              <Image source={pkg.image} style={styles.packageImage} resizeMode="contain" />
+              <Image 
+                source={pkg.image || gameLogos[gameId]} 
+                style={styles.packageImage} 
+                resizeMode="contain" 
+              />
               <Text style={styles.packageAmount}>{pkg.amount} {game.currency}</Text>
               <Text style={styles.packageLabel}>Package {pkg.amount} {game.currency}</Text>
               <Text style={styles.packagePrice}>{formatPrice(pkg.price)}</Text>
@@ -138,6 +141,7 @@ const TopUpScreen = () => {
     const method = paymentMethods[methodId];
     return (
       <TouchableOpacity
+        key={`payment-${methodId}`}
         style={[
           styles.payment,
           selectedPayment?.id === method.id && styles.selectedPayment
@@ -200,7 +204,11 @@ const TopUpScreen = () => {
         {renderPackageGrid(game.packages, 2)}
         {/* Phương thức thanh toán */}
         <Text style={styles.sectionTitle}>Payment Methods</Text>
-        {game.paymentMethods.map((methodId) => renderPaymentMethod({ item: methodId }))}
+        {game.paymentMethods.map((methodId) => (
+          <View key={`payment-container-${methodId}`}>
+            {renderPaymentMethod({ item: methodId })}
+          </View>
+        ))}
         <View style={{ height: 16 }} />
       </ScrollView>
       <View style={styles.footer}>
@@ -249,10 +257,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   gameLogo: {
-    width: 80,
-    height: 80,
-    borderRadius: 12,
-    marginBottom: 8,
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+    marginBottom: 12,
   },
   currency: {
     color: '#8B9CB6',
@@ -289,10 +297,10 @@ const styles = StyleSheet.create({
     borderColor: '#1EB1FC',
   },
   packageImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 8,
-    borderRadius: 8,
+    width: 140,
+    height: 140,
+    marginBottom: 12,
+    borderRadius: 12,
   },
   packageAmount: {
     color: '#fff',
