@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { 
-  View, 
+import {
+  View,
   StyleSheet, 
   TouchableOpacity, 
   Text, 
@@ -37,7 +37,7 @@ const GameList = () => {
   const toggleExpand = useCallback(() => {
     setIsLoading(true);
     setTimeout(() => {
-      setIsExpanded(!isExpanded);
+    setIsExpanded(!isExpanded);
       setIsLoading(false);
     }, 300);
   }, [isExpanded]);

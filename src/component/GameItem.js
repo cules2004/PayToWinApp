@@ -27,16 +27,11 @@ const GameItem = ({ game }) => {
   };
 
   const handlePress = () => {
-    // Tìm gameId tương ứng trong gameConfigs
-    const gameId = Object.keys(gameConfigs).find(key => 
-      gameConfigs[key].name.toLowerCase() === game.title.toLowerCase()
-    );
-
-    if (gameId) {
-      navigation.navigate('TopUp', { gameId });
-    } else {
-      console.warn('Không tìm thấy gameId cho:', game.title);
-    }
+    // Truyền toàn bộ thông tin game sang TopUpScreen
+    navigation.navigate('TopUp', { 
+      gameId: game.id.toString(),
+      gameInfo: game // Truyền thêm thông tin game
+    });
   };
 
   return (
