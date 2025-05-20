@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // For edit icon
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const VerifyEmailScreen = ({ navigation, route }) => {
   const [code, setCode] = useState(['', '', '', '']);
   const email = route?.params?.email || 'Ismail@gmail.com';
   const inputs = [useRef(), useRef(), useRef(), useRef()];
   const [showSuccess, setShowSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (text, idx) => {
     if (text.length > 1) text = text.slice(-1);
@@ -18,12 +20,44 @@ const VerifyEmailScreen = ({ navigation, route }) => {
     }
   };
 
-  const handleVerify = () => {
-    setShowSuccess(true);
-    setTimeout(() => {
-      setShowSuccess(false);
-      navigation.navigate('Login');
-    }, 1500);
+  const handleVerify = async () => {
+    try {
+      // Kiểm tra mã xác thực (trong thực tế sẽ kiểm tra với mã được gửi qua email)
+      const verificationCode = code.join('');
+      if (verificationCode.length !== 4) {
+        setError('Please enter the complete verification code');
+        return;
+      }
+
+      // Lấy danh sách người dùng
+      const usersData = await AsyncStorage.getItem('users');
+      if (!usersData) {
+        setError('User data not found');
+        return;
+      }
+
+      const users = JSON.parse(usersData);
+      const userIndex = users.findIndex(user => user.email === email);
+
+      if (userIndex === -1) {
+        setError('User not found');
+        return;
+      }
+
+      // Cập nhật trạng thái xác thực
+      users[userIndex].isVerified = true;
+      await AsyncStorage.setItem('users', JSON.stringify(users));
+
+      setError('');
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigation.navigate('Login');
+      }, 1500);
+    } catch (error) {
+      setError('Verification failed. Please try again.');
+      console.error('Verification error:', error);
+    }
   };
 
   return (
@@ -55,11 +89,12 @@ const VerifyEmailScreen = ({ navigation, route }) => {
           />
         ))}
       </View>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <TouchableOpacity>
         <Text style={styles.resendText}>Resend again</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.verifyButton} activeOpacity={0.8} onPress={handleVerify}>
-        <Text style={styles.verifyButtonText}>Verif email</Text>
+        <Text style={styles.verifyButtonText}>Verify email</Text>
       </TouchableOpacity>
       <Text style={styles.signinText}>
         Already have an account?{' '}
@@ -195,6 +230,12 @@ const styles = StyleSheet.create({
     textShadowColor: '#000',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 6,
+  },
+  errorText: {
+    color: '#FF4D4F',
+    textAlign: 'center',
+    marginBottom: 16,
+    fontWeight: 'bold',
   },
 });
 

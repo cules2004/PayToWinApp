@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import GradientText from '../component/GradientText';
 
 const SignUpScreen = ({ navigation }) => {
@@ -11,14 +12,52 @@ const SignUpScreen = ({ navigation }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => {
-        navigation.replace('Login');
-      }, 1000);
-      return () => clearTimeout(timer);
+  const handleSignUp = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address!');
+      setSuccess('');
+    } else if (password.length < 6) {
+      setError('Password must be at least 6 characters long!');
+      setSuccess('');
+    } else if (password !== confirmPassword) {
+      setError('Passwords do not match!');
+      setSuccess('');
+    } else {
+      try {
+        // Kiểm tra xem email đã tồn tại chưa
+        const existingUsers = await AsyncStorage.getItem('users');
+        const users = existingUsers ? JSON.parse(existingUsers) : [];
+        
+        if (users.some(user => user.email === email)) {
+          setError('Email already exists!');
+          setSuccess('');
+          return;
+        }
+
+        // Tạo user mới
+        const newUser = {
+          email,
+          password,
+          createdAt: new Date().toISOString(),
+          isVerified: false
+        };
+
+        // Thêm user mới vào danh sách
+        users.push(newUser);
+        await AsyncStorage.setItem('users', JSON.stringify(users));
+
+        setError('');
+        setSuccess('Registration successful! Please verify your email.');
+        
+        // Chuyển hướng đến màn hình xác thực email
+        navigation.navigate('VerifyEmail', { email });
+      } catch (error) {
+        setError('Failed to register. Please try again.');
+        console.error('Error during registration:', error);
+      }
     }
-  }, [success, navigation]);
+  };
 
   return (
     <View style={styles.container}>
@@ -85,23 +124,7 @@ const SignUpScreen = ({ navigation }) => {
       <TouchableOpacity
         style={styles.nextButton}
         activeOpacity={0.8}
-        onPress={() => {
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(email)) {
-            setError('Please enter a valid email address!');
-            setSuccess('');
-          } else if (password.length < 6) {
-            setError('Password must be at least 6 characters long!');
-            setSuccess('');
-          } else if (password !== confirmPassword) {
-            setError('Passwords do not match!');
-            setSuccess('');
-          } else {
-            setError('');
-            setSuccess('');
-            navigation.navigate('VerifyEmail', { email });
-          }
-        }}
+        onPress={handleSignUp}
       >
         <Text style={styles.nextButtonText}>Next</Text>
       </TouchableOpacity>

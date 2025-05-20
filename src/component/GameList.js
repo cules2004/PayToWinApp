@@ -17,17 +17,31 @@ const { width } = Dimensions.get('window');
 const numColumns = 2;
 const itemWidth = (width - 40) / numColumns;
 
-const GameList = () => {
+const GameList = ({ searchQuery = '' }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [isLoading, setIsLoading] = useState(false);
   const initialDisplayCount = 6;
 
   const filteredGames = useMemo(() => {
-    return activeFilter === 'ALL' 
-      ? games 
-      : games.filter(game => game.platform === activeFilter);
-  }, [activeFilter]);
+    let filtered = games;
+    
+    // Apply platform filter
+    if (activeFilter !== 'ALL') {
+      filtered = filtered.filter(game => game.platform === activeFilter);
+    }
+    
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(game => 
+        game.title.toLowerCase().includes(query) ||
+        game.description.toLowerCase().includes(query)
+      );
+    }
+    
+    return filtered;
+  }, [activeFilter, searchQuery]);
 
   const displayGames = useMemo(() => {
     const count = Math.min(initialDisplayCount, filteredGames.length);
@@ -37,7 +51,7 @@ const GameList = () => {
   const toggleExpand = useCallback(() => {
     setIsLoading(true);
     setTimeout(() => {
-    setIsExpanded(!isExpanded);
+      setIsExpanded(!isExpanded);
       setIsLoading(false);
     }, 300);
   }, [isExpanded]);
@@ -76,6 +90,12 @@ const GameList = () => {
     )
   ), [filteredGames.length, isExpanded, isLoading, toggleExpand]);
 
+  const ListEmptyComponent = useCallback(() => (
+    <View style={styles.emptyContainer}>
+      <Text style={styles.emptyText}>No games found</Text>
+    </View>
+  ), []);
+
   return (
     <View style={styles.container}>
       <GradientText text="Popular Games" style={styles.header} />
@@ -88,6 +108,7 @@ const GameList = () => {
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={ListFooterComponent}
+        ListEmptyComponent={ListEmptyComponent}
         removeClippedSubviews={true}
         maxToRenderPerBatch={6}
         windowSize={5}
@@ -133,6 +154,16 @@ const styles = StyleSheet.create({
     color: '#1EB1FC',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  emptyText: {
+    color: '#A0A0A0',
+    fontSize: 16,
   },
 });
 

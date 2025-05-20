@@ -2,7 +2,7 @@ export const gameConfigs = {
   '1': {
     id: '1',
     name: 'Ngoa Long',
-    currency: 'VNĐ',
+    currency: 'GOLD',
     packages: [
       { id: 1, amount: 6, price: 25000, bonus: 0,
         image: require('../../assets/GamePackage/GOLD1.jpg')
@@ -116,7 +116,7 @@ export const gameConfigs = {
   '3': {
     id: '3',
     name: 'Divine Wind',
-    currency: 'VNĐ',
+    currency: 'Gold',
     packages: [
       { id: 1, amount: 6, price: 25000, bonus: 0,
         image: require('../../assets/GamePackage/GOLD1.jpg')
@@ -156,7 +156,7 @@ export const gameConfigs = {
   '4': {
     id: '4',
     name: 'River of Rebirth',
-    currency: 'VNĐ',
+    currency: 'Gold',
     packages: [
       { id: 1, amount: 6, price: 25000, bonus: 0,
         image: require('../../assets/GamePackage/GOLD1.jpg')
@@ -196,12 +196,30 @@ export const gameConfigs = {
   '5': {
     id: '5',
     name: 'Area Breakout',
-    currency: 'VNĐ',
+    currency: 'Bond',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 59, price: 20000, bonus: 0,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 2, amount: 149, price: 50000, bonus: 10000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 3, amount: 297, price: 100000, bonus: 50000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 4, amount: 594, price: 200000, bonus: 150000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 5, amount: 1485, price: 500000, bonus: 200000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 6, amount: 2971, price: 1000000, bonus: 500000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 7, amount: 5942, price: 2000000, bonus: 1000000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       }
+
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -210,12 +228,23 @@ export const gameConfigs = {
   '6': {
     id: '6',
     name: 'Wild Rift',
-    currency: 'VNĐ',
+    currency: 'Wild Core',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 250, price: 50000, bonus: 0,
+        image: require('../../assets/GamePackage/WC1.jpg')
+       },
+      { id: 2, amount: 500, price: 100000, bonus: 10000,
+        image: require('../../assets/GamePackage/WC2.jpg')
+       },
+      { id: 3, amount: 1050, price: 200000, bonus: 50000,
+        image: require('../../assets/GamePackage/WC3.jpg')
+       },
+      { id: 4, amount: 2825, price: 500000, bonus: 150000,
+        image: require('../../assets/GamePackage/WC4.jpg')
+       },
+      { id: 5, amount: 5825, price: 1000000, bonus: 200000,
+        image: require('../../assets/GamePackage/WC5.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -224,12 +253,26 @@ export const gameConfigs = {
   '7': {
     id: '7',
     name: 'Play Together',
-    currency: 'VNĐ',
+    currency: 'Gem',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 41, price: 40000, bonus: 0,
+        image: require('../../assets/GamePackage/GEM1.jpg')
+       },
+      { id: 2, amount: 115, price: 100000, bonus: 10000,
+        image: require('../../assets/GamePackage/GEM2.jpg')
+       },
+      { id: 3, amount: 235, price: 200000, bonus: 50000,
+        image: require('../../assets/GamePackage/GEM3.jpg')
+       },
+      { id: 4, amount: 470, price: 400000, bonus: 150000,
+        image: require('../../assets/GamePackage/GEM4.jpg')
+       },
+      { id: 5, amount: 1300, price: 1000000, bonus: 200000,
+        image: require('../../assets/GamePackage/GEM5.jpg')
+       },
+      { id: 6, amount: 2585, price: 2000000, bonus: 500000,
+        image: require('../../assets/GamePackage/GEM6.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -238,12 +281,23 @@ export const gameConfigs = {
   '8': {
     id: '8',
     name: 'Teamfight Tactics',
-    currency: 'VNĐ',
+    currency: 'TC',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 340, price: 50000, bonus: 0,
+        image: require('../../assets/GamePackage/TC1.jpg')
+       },
+      { id: 2, amount: 690, price: 100000, bonus: 10000,
+        image: require('../../assets/GamePackage/TC2.jpg')
+       },
+      { id: 3, amount: 1400, price: 200000, bonus: 50000,
+        image: require('../../assets/GamePackage/TC3.jpg')
+       },
+      { id: 4, amount: 3550, price: 500000, bonus: 150000,
+        image: require('../../assets/GamePackage/TC4.jpg')
+       },
+      { id: 5, amount: 7250, price: 1000000, bonus: 200000,
+        image: require('../../assets/GamePackage/TC5.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -252,12 +306,23 @@ export const gameConfigs = {
   '9': {
     id: '9',
     name: 'League of Runeterra',
-    currency: 'VNĐ',
+    currency: 'Coin',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 290, price: 50000, bonus: 0,
+        image: require('../../assets/GamePackage/COIN1.jpg')
+       },
+      { id: 2, amount: 580, price: 100000, bonus: 10000,
+        image: require('../../assets/GamePackage/COIN2.jpg')
+       },
+      { id: 3, amount: 1275, price: 200000, bonus: 50000,
+        image: require('../../assets/GamePackage/COIN3.jpg')
+       },
+      { id: 4, amount: 3200, price: 500000, bonus: 150000,
+        image: require('../../assets/GamePackage/COIN4.jpg')
+       },
+      { id: 5, amount: 6750, price: 1000000, bonus: 200000,
+        image: require('../../assets/GamePackage/COIN5.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -266,12 +331,26 @@ export const gameConfigs = {
   '10': {
     id: '10',
     name: 'Top Eleven',
-    currency: 'VNĐ',
+    currency: 'Toke',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 8, price: 20000, bonus: 0,
+        image: require('../../assets/GamePackage/TK1.jpg')
+       },
+      { id: 2, amount: 26, price: 60000, bonus: 10000,
+        image: require('../../assets/GamePackage/TK2.jpg')
+       },
+      { id: 3, amount: 45, price: 100000, bonus: 50000,
+        image: require('../../assets/GamePackage/TK3.jpg')
+       },
+      { id: 4, amount: 135, price: 275000, bonus: 150000,
+        image: require('../../assets/GamePackage/TK4.jpg')
+       },
+      { id: 5, amount: 300, price: 600000, bonus: 200000,
+        image: require('../../assets/GamePackage/TK5.jpg')
+       },
+      { id: 6, amount: 570, price: 1000000, bonus: 500000,
+        image: require('../../assets/GamePackage/TK6.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -378,12 +457,32 @@ export const gameConfigs = {
   '14': {
     id: '14',
     name: 'Valorant',
-    currency: 'VNĐ',
+    currency: 'VP',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 52, price: 10000, bonus: 0,
+        image: require('../../assets/GamePackage/VP1.jpg')
+       },
+      { id: 2, amount: 110, price: 20000, bonus: 10000,
+        image: require('../../assets/GamePackage/VP2.jpg')
+       },
+      { id: 3, amount: 275, price: 50000, bonus: 50000,
+        image: require('../../assets/GamePackage/VP3.jpg')
+       },
+      { id: 4, amount: 610, price: 100000, bonus: 150000,
+        image: require('../../assets/GamePackage/VP4.jpg')
+       },
+      { id: 5, amount: 1220, price: 200000, bonus: 200000,
+        image: require('../../assets/GamePackage/VP5.jpg')
+       },
+      { id: 6, amount: 3040, price: 500000, bonus: 500000,
+        image: require('../../assets/GamePackage/VP6.jpg')
+       },
+      { id: 7, amount: 6550, price: 1000000, bonus: 1000000,
+        image: require('../../assets/GamePackage/VP7.jpg')
+       },
+      { id: 8, amount: 13250, price: 2000000, bonus: 2000000,
+        image: require('../../assets/GamePackage/VP8.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -392,7 +491,7 @@ export const gameConfigs = {
   '15': {
     id: '15',
     name: 'Bomber',
-    currency: 'VNĐ',
+    currency: 'VNĐ',// tu chon da co san
     packages: [
       { id: 1, amount: 100000, price: 100000, bonus: 0 },
       { id: 2, amount: 200000, price: 200000, bonus: 10000 },
@@ -406,12 +505,35 @@ export const gameConfigs = {
   '16': {
     id: '16',
     name: 'Cyber Dream',
-    currency: 'VNĐ',
+    currency: 'Ticket',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 9000, price: 10000, bonus: 0,
+        image: require('../../assets/GamePackage/V1.jpg')
+       },
+      { id: 2, amount: 25000, price: 20000, bonus: 10000,
+        image: require('../../assets/GamePackage/V2.jpg')
+       },
+      { id: 3, amount: 79000, price: 50000, bonus: 50000,
+        image: require('../../assets/GamePackage/V3.jpg')
+       },
+      { id: 4, amount: 149000, price: 100000, bonus: 150000,
+        image: require('../../assets/GamePackage/V4.jpg')
+       },
+      { id: 5, amount: 329000, price: 200000, bonus: 200000,
+        image: require('../../assets/GamePackage/V5.jpg')
+       },
+      { id: 6, amount: 449000, price: 300000, bonus: 500000,
+        image: require('../../assets/GamePackage/V6.jpg')
+       },
+      { id: 7, amount: 899000, price: 6000000, bonus: 1000000,
+        image: require('../../assets/GamePackage/V7.jpg')
+       },
+      { id: 8, amount: 1499000, price: 10000000, bonus: 2000000,
+        image: require('../../assets/GamePackage/V8.jpg')
+       },
+      { id: 9, amount: 2499000, price: 20000000, bonus: 5000000,
+        image: require('../../assets/GamePackage/V9.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -420,12 +542,39 @@ export const gameConfigs = {
   '17': {
     id: '17',
     name: 'Kiem Vu Phong Van',
-    currency: 'VNĐ',
+    currency: 'Purple Gold Ticket',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 1, price: 5000, bonus: 0,
+        image: require('../../assets/GamePackage/TKP1.jpg')
+       },
+      { id: 2, amount: 6, price: 20000, bonus: 10000,
+        image: require('../../assets/GamePackage/TKP2.jpg')
+       },
+      { id: 3, amount: 30, price: 100000, bonus: 50000,
+        image: require('../../assets/GamePackage/TKP3.jpg')
+       },
+      { id: 4, amount: 68, price: 200000, bonus: 150000,
+        image: require('../../assets/GamePackage/TKP4.jpg')
+       },
+      { id: 5, amount: 98, price: 300000, bonus: 200000,
+        image: require('../../assets/GamePackage/TKP5.jpg')
+       },
+      { id: 6, amount: 198, price: 600000, bonus: 500000,
+        image: require('../../assets/GamePackage/TKP6.jpg')
+       },
+      { id: 7, amount: 328, price: 1000000, bonus: 1000000,
+        image: require('../../assets/GamePackage/TKP7.jpg')
+       },
+      { id: 8, amount: 628, price: 2000000, bonus: 2000000,
+        image: require('../../assets/GamePackage/TKP8.jpg')
+       },
+      { id: 9, amount: 1648, price: 5000000, bonus: 5000000,
+        image: require('../../assets/GamePackage/TKP9.jpg')
+       },
+      { id: 10, amount: 3248, price: 10000000, bonus: 10000000,
+        image: require('../../assets/GamePackage/TKP10.jpg')
+       }
+
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -433,7 +582,7 @@ export const gameConfigs = {
   },
   '18': {
     id: '18',
-    name: 'Metal Slug',
+    name: 'Metal Slug',// tu chon da co san
     currency: 'VNĐ',
     packages: [
       { id: 1, amount: 100000, price: 100000, bonus: 0 },
@@ -448,12 +597,17 @@ export const gameConfigs = {
   '19': {
     id: '19',
     name: 'Revelation',
-    currency: 'VNĐ',
+    currency: 'Jewel',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 50, price: 20000, bonus: 0 },
+      { id: 2, amount: 150, price: 50000, bonus: 10000 },
+      { id: 3, amount: 300, price: 100000, bonus: 50000 },
+      { id: 4, amount: 600, price: 200000, bonus: 150000 },
+      { id: 5, amount: 1500, price: 500000, bonus: 200000 },
+      { id: 6, amount: 3000, price: 1000000, bonus: 500000 },
+      { id: 7, amount: 6000, price: 2000000, bonus: 1000000 },
+      { id: 8, amount: 15000, price: 5000000, bonus: 2000000 },
+      { id: 9, amount: 30000, price: 10000000, bonus: 5000000 }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -462,6 +616,25 @@ export const gameConfigs = {
   '20': {
     id: '20',
     name: 'OMG3Q',
+    currency: 'NB',
+    packages: [
+      { id: 1, amount: 80, price: 20000, bonus: 0 },
+      { id: 2, amount: 200, price: 50000, bonus: 10000 },
+      { id: 3, amount: 800, price: 200000, bonus: 50000 },
+      { id: 4, amount: 2000, price: 500000, bonus: 150000 },
+      { id: 5, amount: 4000, price: 1000000, bonus: 200000 },
+      { id: 6, amount: 6000, price: 1500000, bonus: 500000 },
+      { id: 7, amount: 12000, price: 3000000, bonus: 1000000 },
+      { id: 8, amount: 20000, price: 5000000, bonus: 2000000 }
+
+    ],
+    paymentMethods: ['momo', 'zalopay', 'banking'],
+    minAmount: 100000,
+    maxAmount: 2000000
+  },
+  '21': {
+    id: '21',
+    name: 'Divine Dragon', // tu them cai da co san 
     currency: 'VNĐ',
     packages: [
       { id: 1, amount: 100000, price: 100000, bonus: 0 },
@@ -473,15 +646,108 @@ export const gameConfigs = {
     minAmount: 100000,
     maxAmount: 2000000
   },
-  '21': {
-    id: '21',
-    name: 'Divine Dragon',
-    currency: 'VNĐ',
+  '22': {
+    id: '22',
+    name: 'Hello Cafe',
+    currency: 'Seed',
     packages: [
-      { id: 1, amount: 100000, price: 100000, bonus: 0 },
-      { id: 2, amount: 200000, price: 200000, bonus: 10000 },
-      { id: 3, amount: 500000, price: 500000, bonus: 50000 },
-      { id: 4, amount: 1000000, price: 1000000, bonus: 150000 }
+      { id: 1, amount: 2, price: 2000, bonus: 0 },
+      { id: 2, amount: 20, price: 20000, bonus: 10000 },
+      { id: 3, amount: 100, price: 100000, bonus: 50000 },
+      { id: 4, amount: 200, price: 200000, bonus: 150000 },
+      { id: 5, amount: 300, price: 300000, bonus: 200000 },
+      { id: 6, amount: 400, price: 400000, bonus: 500000 },
+      { id: 7, amount: 600, price: 600000, bonus: 1000000 },
+      { id: 8, amount: 1000, price: 1000000, bonus: 2000000 },
+      { id: 9, amount: 2000, price: 2000000, bonus: 5000000 },
+      { id: 10, amount: 10000, price: 10000000, bonus: 10000000 }
+    ],
+    paymentMethods: ['momo', 'zalopay', 'banking'],
+    minAmount: 100000,
+    maxAmount: 2000000
+  },
+  '23': {
+    id: '23',
+    name: 'Gun Power',
+    currency: 'PW', // tu chon da co san
+    packages: [
+      { id: 1, amount: 63, price: 50000, bonus: 0,
+        image: require('../../assets/GamePackage/PW1.jpg')
+       },
+      { id: 2, amount: 152, price: 100000, bonus: 10000,
+        image: require('../../assets/GamePackage/PW2.jpg')
+       },
+      { id: 3, amount: 305, price: 200000, bonus: 50000,
+        image: require('../../assets/GamePackage/PW3.jpg')
+       },
+      { id: 4, amount: 633, price: 500000, bonus: 150000,
+        image: require('../../assets/GamePackage/PW4.jpg')
+       },
+      { id: 5, amount: 1656, price: 1000000, bonus: 200000,
+        image: require('../../assets/GamePackage/PW5.jpg')
+       },
+      { id: 6, amount: 3312, price: 2000000, bonus: 500000,
+        image: require('../../assets/GamePackage/PW6.jpg')
+       }
+    ],
+    paymentMethods: ['momo', 'zalopay', 'banking'],
+    minAmount: 100000,
+    maxAmount: 2000000
+  },
+  '24': {
+    id: '24',
+    name: 'Gunny Mobi',
+    currency: 'PW', // tu chon da co san
+    packages: [
+      { id: 1, amount: 63, price: 50000, bonus: 0,
+        image: require('../../assets/GamePackage/PW1.jpg')
+       },
+      { id: 2, amount: 152, price: 100000, bonus: 10000,
+        image: require('../../assets/GamePackage/PW2.jpg')
+       },
+      { id: 3, amount: 305, price: 200000, bonus: 50000,
+        image: require('../../assets/GamePackage/PW3.jpg')
+       },
+      { id: 4, amount: 633, price: 500000, bonus: 150000,
+        image: require('../../assets/GamePackage/PW4.jpg')
+       },
+      { id: 5, amount: 1656, price: 1000000, bonus: 200000,
+        image: require('../../assets/GamePackage/PW5.jpg')
+       },
+      { id: 6, amount: 3312, price: 2000000, bonus: 500000,
+        image: require('../../assets/GamePackage/PW6.jpg')
+       }
+    ],
+    paymentMethods: ['momo', 'zalopay', 'banking'],
+    minAmount: 100000,
+    maxAmount: 2000000
+  },
+  '25': {
+    id: '25',
+    name: 'Call Of Duty',
+    currency: 'Bond', // tu chon da co san
+    packages: [ 
+      { id: 1, amount: 59, price: 20000, bonus: 0,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 2, amount: 149, price: 50000, bonus: 10000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 3, amount: 297, price: 100000, bonus: 50000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 4, amount: 594, price: 200000, bonus: 150000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 5, amount: 1485, price: 500000, bonus: 200000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 6, amount: 2971, price: 1000000, bonus: 500000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       },
+      { id: 7, amount: 5942, price: 2000000, bonus: 1000000,
+        image: require('../../assets/GamePackage/BOND.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -506,7 +772,7 @@ export const paymentMethods = {
   },
   banking: {
     id: 'banking',
-    name: 'Chuyển khoản ngân hàng',
+    name: 'Bank Transfer',
     icon: require('../../assets/Images/BankingLogo.png'),
     minAmount: 100000,
     maxAmount: 20000000

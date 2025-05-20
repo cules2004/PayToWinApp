@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, CheckBox } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import GradientText from '../component/GradientText';
 
 const LoginScreen = ({ navigation }) => {
@@ -8,6 +9,93 @@ const LoginScreen = ({ navigation }) => {
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Kiểm tra thông tin đăng nhập đã lưu khi mở màn hình
+  useEffect(() => {
+    const checkRememberedUser = async () => {
+      try {
+        const rememberedUserData = await AsyncStorage.getItem('rememberedUser');
+        if (rememberedUserData) {
+          const { email: savedEmail, password: savedPassword } = JSON.parse(rememberedUserData);
+          setEmail(savedEmail);
+          setPassword(savedPassword);
+          setRemember(true);
+        }
+      } catch (error) {
+        console.error('Error loading remembered user:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkRememberedUser();
+  }, []);
+
+  const handleLogin = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email) || password.length < 6) {
+      setError('Login information is incorrect.');
+      return;
+    }
+
+    try {
+      // Lấy danh sách người dùng từ AsyncStorage
+      const usersData = await AsyncStorage.getItem('users');
+      if (!usersData) {
+        setError('No registered users found. Please sign up first.');
+        return;
+      }
+
+      const users = JSON.parse(usersData);
+      const user = users.find(u => u.email === email);
+
+      if (!user) {
+        setError('Email not found. Please sign up first.');
+        return;
+      }
+
+      if (user.password !== password) {
+        setError('Incorrect password.');
+        return;
+      }
+
+      if (!user.isVerified) {
+        setError('Please verify your email first.');
+        return;
+      }
+
+      // Lưu thông tin đăng nhập nếu người dùng chọn "Remember me"
+      if (remember) {
+        await AsyncStorage.setItem('rememberedUser', JSON.stringify({ email, password }));
+      } else {
+        await AsyncStorage.removeItem('rememberedUser');
+      }
+
+      // Lưu thông tin phiên đăng nhập hiện tại
+      const currentSession = {
+        email: user.email,
+        loginTime: new Date().toISOString(),
+        isVerified: user.isVerified
+      };
+      await AsyncStorage.setItem('currentUser', JSON.stringify(currentSession));
+
+      setError('');
+      navigation.replace('HomePage', { email: user.email });
+    } catch (error) {
+      setError('An error occurred during login. Please try again.');
+      console.error('Login error:', error);
+    }
+  };
+
+  // Nếu đang tải dữ liệu, hiển thị màn hình trống
+  if (isLoading) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{ color: '#fff' }}>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -59,15 +147,7 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.rememberText}>Remember me</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.signInButton} activeOpacity={0.8} onPress={() => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email) || password.length < 6) {
-          setError('Login information is incorrect.');
-        } else {
-          setError('');
-          navigation.replace('HomePage', { email });
-        }
-      }}>
+      <TouchableOpacity style={styles.signInButton} activeOpacity={0.8} onPress={handleLogin}>
         <Text style={styles.signInButtonText}>Sign in</Text>
       </TouchableOpacity>
       {error ? <Text style={{ color: '#FF4D4F', textAlign: 'center', marginBottom: 8, fontWeight: 'bold' }}>{error}</Text> : null}

@@ -7,6 +7,9 @@ import NavigationBar from '../component/NavigationBar';
 import SearchBar from '../component/SearchBar';
 import Carousel from '../component/Carousel';
 import GameList from '../component/GameList';
+import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const HEADER_HEIGHT = 120; // Tổng chiều cao của header (NavigationBar + SearchBar)
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -17,9 +20,25 @@ const HomePageScreen = ({ route, navigation }) => {
   const lastOffset = useRef(0);
   const screenWidth = useRef(Dimensions.get('window').width).current;
   const [showProfile, setShowProfile] = useState(false);
-  const email = route?.params?.email || 'user@email.com';
+  const [email, setEmail] = useState(route?.params?.email || '');
   const [randomId, setRandomId] = useState('');
   const scrollY = useRef(new Animated.Value(0)).current;
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const fetchEmail = async () => {
+      if (route?.params?.email) {
+        setEmail(route.params.email);
+      } else {
+        const session = await AsyncStorage.getItem('currentUser');
+        if (session) {
+          const { email: storedEmail } = JSON.parse(session);
+          setEmail(storedEmail);
+        }
+      }
+    };
+    if (isFocused) fetchEmail();
+  }, [route?.params?.email, isFocused]);
 
   useEffect(() => {
     // Generate a random 16-character alphanumeric ID
@@ -67,7 +86,47 @@ const HomePageScreen = ({ route, navigation }) => {
 
   const renderGameList = () => (
     <View style={styles.gameListContainer}>
-      <GameList />
+      <GameList searchQuery={search} />
+    </View>
+  );
+
+  const benefits = [
+    {
+      icon: 'gift-outline',
+      label: 'Amazing deals',
+    },
+    {
+      icon: 'trophy-outline',
+      label: 'Exclusive items',
+    },
+    {
+      icon: 'swap-horizontal-outline',
+      label: 'Direct payment',
+    },
+    {
+      icon: 'pricetag-outline',
+      label: 'Best price',
+    },
+  ];
+
+  const renderBenefitsSection = () => (
+    <View style={styles.benefitsSection}>
+      <Text style={styles.benefitsTitle}>BENEFITS WHEN DEPOSITING AT PAYTOWIN</Text>
+      <View style={styles.benefitsGrid}>
+        {benefits.map((item, idx) => (
+          <View key={item.label} style={styles.benefitBox}>
+            <LinearGradient
+              colors={['#FF9800', '#FF512F']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.iconWrapper}
+            >
+              <Ionicons name={item.icon} size={38} color="#fff" />
+            </LinearGradient>
+            <Text style={styles.benefitLabel}>{item.label}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 
@@ -76,7 +135,12 @@ const HomePageScreen = ({ route, navigation }) => {
       case 'header':
         return renderHeader();
       case 'gameList':
-        return renderGameList();
+        return (
+          <>
+            {renderGameList()}
+            {renderBenefitsSection()}
+          </>
+        );
       default:
         return null;
     }
@@ -122,10 +186,12 @@ const HomePageScreen = ({ route, navigation }) => {
         email={email}
         randomId={randomId}
         onLogout={handleLogout}
-        onManageAccount={() => { setShowProfile(false); navigation.navigate('AccountScreen'); }}
-        onManagePayment={() => { setShowProfile(false); navigation.navigate('ManagePaymentScreen'); }}
-        activeTab={navigation?.getState?.()?.routes?.[navigation.getState().index]?.name === 'AccountScreen' ? 'account' :
-                  navigation?.getState?.()?.routes?.[navigation.getState().index]?.name === 'ManagePaymentScreen' ? 'payment' : undefined}
+        onManageAccount={() => {
+          setShowProfile(false);
+          navigation.navigate('AccountScreen', { email });
+        }}
+        activeTab={navigation?.getState?.()?.routes?.[navigation.getState().index]?.name === 'AccountScreen' ? 'account' : undefined}
+        navigation={navigation}
       />
     </View>
   );
@@ -163,6 +229,51 @@ const styles = StyleSheet.create({
   },
   gameListContainer: {
     marginTop: 20,
+  },
+  benefitsSection: {
+    marginTop: 32,
+    marginBottom: 16,
+  },
+  benefitsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 18,
+    letterSpacing: 1,
+  },
+  benefitsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  benefitBox: {
+    width: '48%',
+    aspectRatio: 1,
+    backgroundColor: '#F7F8FA',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  iconWrapper: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  benefitLabel: {
+    color: '#23243A',
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
 

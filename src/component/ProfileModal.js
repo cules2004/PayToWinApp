@@ -3,7 +3,7 @@ import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import MenuOption from './MenuOption';
 
-const ProfileModal = ({ visible, onClose, email, randomId, onLogout, onManageAccount, onManagePayment, activeTab }) => (
+const ProfileModal = ({ visible, onClose, email, randomId, onLogout, onManageAccount, onManagePayment, activeTab, navigation }) => (
   <Modal
     visible={visible}
     transparent
@@ -26,7 +26,10 @@ const ProfileModal = ({ visible, onClose, email, randomId, onLogout, onManageAcc
         <MenuOption
           icon="card"
           label="Manage Payment"
-          onPress={onManagePayment}
+          onPress={() => {
+            onClose();
+            navigation.navigate('PaymentManagement', { email });
+          }}
           active={activeTab === 'payment'}
         />
         <MenuOption

@@ -10,10 +10,13 @@ import {
   Alert,
   FlatList,
   ScrollView,
+  TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { gameConfigs, paymentMethods } from '../data/gameConfigs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const gameLogos = {
   '1': require('../../assets/Images/GCL.jpg'),
@@ -39,9 +42,7 @@ const gameLogos = {
   '21': require('../../assets/Images/DivineDragon.jpg'),
 };
 
-const TopUpScreen = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
+const TopUpScreen = ({ navigation, route }) => {
   const { gameId, gameInfo } = route.params;
   const game = gameConfigs[gameId];
 
@@ -51,6 +52,7 @@ const TopUpScreen = () => {
 
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!game) {
@@ -80,16 +82,52 @@ const TopUpScreen = () => {
     setSelectedPayment(payment);
   }, []);
 
-  const handleTopUp = useCallback(() => {
-    if (!selectedPackage || !selectedPayment) return;
-    
-    // TODO: Implement payment logic
-    console.log('Top up:', {
-      game: game.name,
-      package: selectedPackage,
-      payment: selectedPayment
-    });
-  }, [selectedPackage, selectedPayment, game]);
+  const handleTopUp = async (amount, paymentMethod) => {
+    try {
+      setLoading(true);
+      
+      // Tạo giao dịch mới với ID duy nhất
+      const newTransaction = {
+        id: `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        date: new Date().toISOString(),
+        amount: amount,
+        description: `Top up via ${paymentMethod.name}`,
+        status: 'completed',
+        paymentMethod: paymentMethod.id,
+        gameInfo: gameInfo.title,
+      };
+
+      // Lưu giao dịch vào AsyncStorage
+      const session = await AsyncStorage.getItem('currentUser');
+      if (session) {
+        const { email } = JSON.parse(session);
+        const storedTransactions = await AsyncStorage.getItem(`transactions_${email}`);
+        const transactions = storedTransactions ? JSON.parse(storedTransactions) : [];
+        transactions.unshift(newTransaction);
+        await AsyncStorage.setItem(`transactions_${email}`, JSON.stringify(transactions));
+      }
+
+      // Giả lập xử lý giao dịch
+      setTimeout(() => {
+        setLoading(false);
+        Alert.alert(
+          'Success',
+          'Top up successful!',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.replace('HomePage'),
+            },
+          ]
+        );
+      }, 1500);
+
+    } catch (error) {
+      console.error('Error processing transaction:', error);
+      setLoading(false);
+      Alert.alert('Error', 'Unable to process transaction. Please try again later.');
+    }
+  };
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -160,7 +198,7 @@ const TopUpScreen = () => {
 
   const sections = [
     {
-      title: 'Thông tin game',
+      title: 'Game Information',
       data: [null],
       renderItem: () => (
         <View style={styles.gameInfo}>
@@ -173,7 +211,7 @@ const TopUpScreen = () => {
       ),
     },
     {
-      title: 'Phương thức thanh toán',
+      title: 'Payment Methods',
       data: game.paymentMethods,
       renderItem: renderPaymentMethod,
     },
@@ -190,39 +228,67 @@ const TopUpScreen = () => {
         </TouchableOpacity>
         <Text style={styles.title}>{gameInfo.title}</Text>
       </View>
-      <ScrollView contentContainerStyle={{ paddingBottom: 24 }} showsVerticalScrollIndicator={false}>
-        <View style={styles.gameInfo}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent} 
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Game Info Section */}
+        <View style={styles.gameInfoContainer}>
           <Image 
             source={gameInfo.image} 
             style={styles.gameLogo}
           />
           <Text style={styles.currency}>{game.currency}</Text>
         </View>
-        {/* Title danh sách gói */}
-        <Text style={styles.sectionTitle}>Package List</Text>
-        {/* Danh sách gói nạp dạng grid */}
-        {renderPackageGrid(game.packages, 2)}
-        {/* Phương thức thanh toán */}
-        <Text style={styles.sectionTitle}>Payment Methods</Text>
-        {game.paymentMethods.map((methodId) => (
-          <View key={`payment-container-${methodId}`}>
-            {renderPaymentMethod({ item: methodId })}
+        
+        {/* Player ID Input */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Player ID / Username</Text>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your player ID or username"
+              placeholderTextColor="#8B9CB6"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
           </View>
-        ))}
-        <View style={{ height: 16 }} />
+        </View>
+
+        {/* Package List Section */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Select Package</Text>
+          {renderPackageGrid(game.packages, 2)}
+        </View>
+
+        {/* Payment Methods Section */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Payment Methods</Text>
+          {game.paymentMethods.map((methodId) => (
+            <View key={`payment-container-${methodId}`}>
+              {renderPaymentMethod({ item: methodId })}
+            </View>
+          ))}
+        </View>
       </ScrollView>
+
+      {/* Footer with Top Up Button */}
       <View style={styles.footer}>
         <TouchableOpacity
           style={[
             styles.topUpButton,
-            (!selectedPackage || !selectedPayment) && styles.disabledButton
+            (!selectedPackage || !selectedPayment || loading) && styles.disabledButton
           ]}
-          onPress={handleTopUp}
-          disabled={!selectedPackage || !selectedPayment}
+          onPress={() => handleTopUp(selectedPackage.price, selectedPayment)}
+          disabled={!selectedPackage || !selectedPayment || loading}
         >
-          <Text style={styles.topUpButtonText}>
-            Top Up {selectedPackage ? formatPrice(selectedPackage.price) : '0đ'}
-          </Text>
+          {loading ? (
+            <Text style={styles.topUpButtonText}>Đang Tải...</Text>
+          ) : (
+            <Text style={styles.topUpButtonText}>
+              {selectedPackage ? `Top Up ${formatPrice(selectedPackage.price)}` : 'Select Package'}
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -240,67 +306,95 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#23243A',
+    backgroundColor: '#1F2133',
   },
   backButton: {
     marginRight: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#23243A',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: 'bold',
   },
-  content: {
-    paddingBottom: 20,
+  scrollContent: {
+    paddingBottom: 24,
   },
-  gameInfo: {
+  gameInfoContainer: {
     alignItems: 'center',
-    padding: 20,
+    padding: 24,
+    backgroundColor: '#1F2133',
+    marginBottom: 16,
   },
   gameLogo: {
     width: 120,
     height: 120,
-    borderRadius: 16,
+    borderRadius: 20,
     marginBottom: 12,
   },
   currency: {
     color: '#8B9CB6',
     fontSize: 16,
+    fontWeight: '500',
+  },
+  inputContainer: {
+    padding: 16,
+    backgroundColor: '#1F2133',
+    marginBottom: 16,
+  },
+  inputLabel: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  inputWrapper: {
+    backgroundColor: '#23243A',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#2A2D42',
+  },
+  input: {
+    padding: 16,
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  sectionContainer: {
+    padding: 16,
+    backgroundColor: '#1F2133',
+    marginBottom: 16,
   },
   sectionTitle: {
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 16,
-    paddingHorizontal: 16,
-  },
-  packagesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 8,
   },
   packageCard: {
     flex: 1,
-    margin: 8,
+    margin: 6,
     backgroundColor: '#23243A',
-    borderRadius: 14,
+    borderRadius: 12,
     alignItems: 'center',
     padding: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.18,
-    shadowRadius: 4,
-    elevation: 4,
+    borderWidth: 1,
+    borderColor: '#2A2D42',
   },
   packageCardSelected: {
     borderWidth: 2,
     borderColor: '#1EB1FC',
+    backgroundColor: '#1A1C2E',
   },
   packageImage: {
-    width: 140,
-    height: 140,
-    marginBottom: 12,
-    borderRadius: 12,
+    width: 150,
+    height: 150,
+    marginBottom: 8,
+    borderRadius: 20,
   },
   packageAmount: {
     color: '#fff',
@@ -311,7 +405,7 @@ const styles = StyleSheet.create({
   },
   packageLabel: {
     color: '#8B9CB6',
-    fontSize: 14,
+    fontSize: 12,
     marginBottom: 4,
     textAlign: 'center',
   },
@@ -324,41 +418,51 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    marginHorizontal: 16,
     marginBottom: 8,
     backgroundColor: '#23243A',
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#2A2D42',
   },
   selectedPayment: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#1EB1FC',
+    backgroundColor: '#1A1C2E',
   },
   paymentIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 12,
+    width: 32,
+    height: 32,
+    marginRight: 16,
   },
   paymentName: {
     color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: '500',
   },
   footer: {
     padding: 16,
     borderTopWidth: 1,
     borderTopColor: '#23243A',
+    backgroundColor: '#1F2133',
   },
   topUpButton: {
     backgroundColor: '#1EB1FC',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
+    shadowColor: '#1EB1FC',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
   },
   disabledButton: {
     backgroundColor: '#23243A',
+    shadowOpacity: 0,
   },
   topUpButtonText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
