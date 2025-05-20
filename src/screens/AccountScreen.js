@@ -101,7 +101,7 @@ const AccountScreen = ({ navigation, route }) => {
         onLogoPress={() => navigation.replace('HomePage')}
         rightLabel={<Text style={styles.accountLabel}>Account</Text>}
       />
-      <SearchBar value={search} onChangeText={setSearch} />
+      {/*<SearchBar value={search} onChangeText={setSearch} />*/}
       
       <ScrollView style={styles.scrollView}>
         {/* Profile Section */}

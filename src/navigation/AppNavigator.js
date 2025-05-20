@@ -10,7 +10,7 @@ import HomePageScreen from '../screens/HomePageScreen';
 import AccountScreen from '../screens/AccountScreen';
 import TopUpScreen from '../screens/TopUpScreen';
 import PersonalInfoScreen from '../screens/PersonalInfoScreen';
-import PaymentManagement from '../component/PaymentManagement';
+import PaymentManagement from '../screens/PaymentManagement';
 
 const Stack = createNativeStackNavigator();
 

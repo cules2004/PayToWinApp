@@ -158,15 +158,15 @@ const LoginScreen = ({ navigation }) => {
       </View>
       <View style={styles.socialRow}>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('C:/Users/admin/PayToWinApp/assets/Images/Google.png')} style={styles.socialIcon} />
+          <Image source={require('../../assets/Images/Google.png')} style={styles.socialIcon} />
           <Text style={styles.socialLabel}>Google</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('C:/Users/admin/PayToWinApp/assets/Images/facebook.png')} style={styles.socialIcon} />
+          <Image source={require('../../assets/Images/facebook.png')} style={styles.socialIcon} />
           <Text style={styles.socialLabel}>Facebook</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('C:/Users/admin/PayToWinApp/assets/Images/Github.png')} style={styles.socialIcon} />
+          <Image source={require('../../assets/Images/Github.png')} style={styles.socialIcon} />
           <Text style={styles.socialLabel}>Github</Text>
         </TouchableOpacity>
       </View>

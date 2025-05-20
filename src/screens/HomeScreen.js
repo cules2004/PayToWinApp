@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
       style={styles.container}
     >
       <Image
-        source={require('C:/Users/admin/PayToWinApp/assets/Images/4493f57208853f34c4d903e07ef90afc.png')}
+        source={require('../../assets/Images/4493f57208853f34c4d903e07ef90afc.png')}
         style={styles.characterImage}
         resizeMode="contain"
       />

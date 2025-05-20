@@ -11,7 +11,7 @@ const GettingStartedScreen = ({ navigation }) => {
         <Text style={styles.subtitle}>WITH THRILLING NEW ADVENTURES </Text>
       </Text>
       <Image
-        source={require('C:/Users/admin/PayToWinApp/assets/Images/GettingStartedImage.png')}
+        source={require('../../assets/Images/GettingStartedImage.png')}
         style={styles.characterImage}
         resizeMode="contain"
       />
