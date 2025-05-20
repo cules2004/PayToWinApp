@@ -599,15 +599,33 @@ export const gameConfigs = {
     name: 'Revelation',
     currency: 'Jewel',
     packages: [
-      { id: 1, amount: 50, price: 20000, bonus: 0 },
-      { id: 2, amount: 150, price: 50000, bonus: 10000 },
-      { id: 3, amount: 300, price: 100000, bonus: 50000 },
-      { id: 4, amount: 600, price: 200000, bonus: 150000 },
-      { id: 5, amount: 1500, price: 500000, bonus: 200000 },
-      { id: 6, amount: 3000, price: 1000000, bonus: 500000 },
-      { id: 7, amount: 6000, price: 2000000, bonus: 1000000 },
-      { id: 8, amount: 15000, price: 5000000, bonus: 2000000 },
-      { id: 9, amount: 30000, price: 10000000, bonus: 5000000 }
+      { id: 1, amount: 50, price: 20000, bonus: 0,
+        image: require('../../assets/GamePackage/J1.jpg')
+       },
+      { id: 2, amount: 150, price: 50000, bonus: 10000,
+        image: require('../../assets/GamePackage/J2.jpg')
+       },
+      { id: 3, amount: 300, price: 100000, bonus: 50000,
+        image: require('../../assets/GamePackage/J3.jpg')
+       },
+      { id: 4, amount: 600, price: 200000, bonus: 150000,
+        image: require('../../assets/GamePackage/J4.jpg')
+       },
+      { id: 5, amount: 1500, price: 500000, bonus: 200000,
+        image: require('../../assets/GamePackage/J5.jpg')
+       },
+      { id: 6, amount: 3000, price: 1000000, bonus: 500000,
+        image: require('../../assets/GamePackage/J6.jpg')
+       },
+      { id: 7, amount: 6000, price: 2000000, bonus: 1000000,
+        image: require('../../assets/GamePackage/J7.jpg')
+       },
+      { id: 8, amount: 15000, price: 5000000, bonus: 2000000,
+        image: require('../../assets/GamePackage/J8.jpg')
+       },
+      { id: 9, amount: 30000, price: 10000000, bonus: 5000000,
+        image: require('../../assets/GamePackage/J9.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,
@@ -618,14 +636,30 @@ export const gameConfigs = {
     name: 'OMG3Q',
     currency: 'NB',
     packages: [
-      { id: 1, amount: 80, price: 20000, bonus: 0 },
-      { id: 2, amount: 200, price: 50000, bonus: 10000 },
-      { id: 3, amount: 800, price: 200000, bonus: 50000 },
-      { id: 4, amount: 2000, price: 500000, bonus: 150000 },
-      { id: 5, amount: 4000, price: 1000000, bonus: 200000 },
-      { id: 6, amount: 6000, price: 1500000, bonus: 500000 },
-      { id: 7, amount: 12000, price: 3000000, bonus: 1000000 },
-      { id: 8, amount: 20000, price: 5000000, bonus: 2000000 }
+      { id: 1, amount: 80, price: 20000, bonus: 0,
+        image: require('../../assets/GamePackage/NB1.jpg')
+       },
+      { id: 2, amount: 200, price: 50000, bonus: 10000,
+        image: require('../../assets/GamePackage/NB2.jpg')
+       },
+      { id: 3, amount: 800, price: 200000, bonus: 50000,
+        image: require('../../assets/GamePackage/NB3.jpg')
+       },
+      { id: 4, amount: 2000, price: 500000, bonus: 150000,
+        image: require('../../assets/GamePackage/NB4.jpg')
+       },
+      { id: 5, amount: 4000, price: 1000000, bonus: 200000,
+        image: require('../../assets/GamePackage/NB5.jpg')
+       },
+      { id: 6, amount: 6000, price: 1500000, bonus: 500000,
+        image: require('../../assets/GamePackage/NB6.jpg')
+       },
+      { id: 7, amount: 12000, price: 3000000, bonus: 1000000,
+        image: require('../../assets/GamePackage/NB7.jpg')
+       },
+      { id: 8, amount: 20000, price: 5000000, bonus: 2000000,
+        image: require('../../assets/GamePackage/NB8.jpg')
+       }
 
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
@@ -651,16 +685,36 @@ export const gameConfigs = {
     name: 'Hello Cafe',
     currency: 'Seed',
     packages: [
-      { id: 1, amount: 2, price: 2000, bonus: 0 },
-      { id: 2, amount: 20, price: 20000, bonus: 10000 },
-      { id: 3, amount: 100, price: 100000, bonus: 50000 },
-      { id: 4, amount: 200, price: 200000, bonus: 150000 },
-      { id: 5, amount: 300, price: 300000, bonus: 200000 },
-      { id: 6, amount: 400, price: 400000, bonus: 500000 },
-      { id: 7, amount: 600, price: 600000, bonus: 1000000 },
-      { id: 8, amount: 1000, price: 1000000, bonus: 2000000 },
-      { id: 9, amount: 2000, price: 2000000, bonus: 5000000 },
-      { id: 10, amount: 10000, price: 10000000, bonus: 10000000 }
+      { id: 1, amount: 2, price: 2000, bonus: 0,
+        image: require('../../assets/GamePackage/S1.jpg')
+       },
+      { id: 2, amount: 20, price: 20000, bonus: 10000,
+        image: require('../../assets/GamePackage/S2.jpg')
+       },
+      { id: 3, amount: 100, price: 100000, bonus: 50000,
+        image: require('../../assets/GamePackage/S3.jpg')
+       },
+      { id: 4, amount: 200, price: 200000, bonus: 150000,
+        image: require('../../assets/GamePackage/S4.jpg')
+       },
+      { id: 5, amount: 300, price: 300000, bonus: 200000,
+        image: require('../../assets/GamePackage/S5.jpg')
+       },
+      { id: 6, amount: 400, price: 400000, bonus: 500000,
+        image: require('../../assets/GamePackage/S6.jpg')
+       },
+      { id: 7, amount: 600, price: 600000, bonus: 1000000,
+        image: require('../../assets/GamePackage/S7.jpg')
+       },
+      { id: 8, amount: 1000, price: 1000000, bonus: 2000000,
+        image: require('../../assets/GamePackage/S8.jpg')
+       },
+      { id: 9, amount: 2000, price: 2000000, bonus: 5000000,
+        image: require('../../assets/GamePackage/S9.jpg')
+       },
+      { id: 10, amount: 10000, price: 10000000, bonus: 10000000,
+        image: require('../../assets/GamePackage/S10.jpg')
+       }
     ],
     paymentMethods: ['momo', 'zalopay', 'banking'],
     minAmount: 100000,

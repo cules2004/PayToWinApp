@@ -110,7 +110,7 @@ const LoginScreen = ({ navigation }) => {
         style={styles.gradientTitle}
         colors={['#14E585', '#9E01B7']}
         start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
+        end={{ x: 1, y: 1 }}
       />
       <Text style={styles.subtitle}>Login to Your Account</Text>
       <View style={styles.inputContainer}>
