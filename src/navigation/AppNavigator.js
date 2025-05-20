@@ -11,6 +11,7 @@ import AccountScreen from '../screens/AccountScreen';
 import TopUpScreen from '../screens/TopUpScreen';
 import PersonalInfoScreen from '../screens/PersonalInfoScreen';
 import PaymentManagement from '../screens/PaymentManagement';
+import SecurityScreen from '../screens/SecurityScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,7 @@ const AppNavigator = () => {
       <Stack.Screen name="TopUp" component={TopUpScreen} />
       <Stack.Screen name="PersonalInfo" component={PersonalInfoScreen} />
       <Stack.Screen name="PaymentManagement" component={PaymentManagement} />
+      <Stack.Screen name="SecurityScreen" component={SecurityScreen}/>
     </Stack.Navigator>
   );
 };
