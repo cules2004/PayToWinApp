@@ -1,29 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, CheckBox } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import GradientText from '../component/GradientText';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import GradientText from "../component/GradientText";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   // Kiểm tra thông tin đăng nhập đã lưu khi mở màn hình
   useEffect(() => {
     const checkRememberedUser = async () => {
       try {
-        const rememberedUserData = await AsyncStorage.getItem('rememberedUser');
+        const rememberedUserData = await AsyncStorage.getItem("rememberedUser");
         if (rememberedUserData) {
-          const { email: savedEmail, password: savedPassword } = JSON.parse(rememberedUserData);
+          const { email: savedEmail, password: savedPassword } =
+            JSON.parse(rememberedUserData);
           setEmail(savedEmail);
           setPassword(savedPassword);
           setRemember(true);
         }
       } catch (error) {
-        console.error('Error loading remembered user:', error);
+        console.error("Error loading remembered user:", error);
       } finally {
         setIsLoading(false);
       }
@@ -35,64 +43,72 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email) || password.length < 6) {
-      setError('Login information is incorrect.');
+      setError("Login information is incorrect.");
       return;
     }
 
     try {
       // Lấy danh sách người dùng từ AsyncStorage
-      const usersData = await AsyncStorage.getItem('users');
+      const usersData = await AsyncStorage.getItem("users");
       if (!usersData) {
-        setError('No registered users found. Please sign up first.');
+        setError("No registered users found. Please sign up first.");
         return;
       }
 
       const users = JSON.parse(usersData);
-      const user = users.find(u => u.email === email);
+      const user = users.find((u) => u.email === email);
 
       if (!user) {
-        setError('Email not found. Please sign up first.');
+        setError("Email not found. Please sign up first.");
         return;
       }
 
       if (user.password !== password) {
-        setError('Incorrect password.');
+        setError("Incorrect password.");
         return;
       }
 
       if (!user.isVerified) {
-        setError('Please verify your email first.');
+        setError("Please verify your email first.");
         return;
       }
 
       // Lưu thông tin đăng nhập nếu người dùng chọn "Remember me"
       if (remember) {
-        await AsyncStorage.setItem('rememberedUser', JSON.stringify({ email, password }));
+        await AsyncStorage.setItem(
+          "rememberedUser",
+          JSON.stringify({ email, password })
+        );
       } else {
-        await AsyncStorage.removeItem('rememberedUser');
+        await AsyncStorage.removeItem("rememberedUser");
       }
 
       // Lưu thông tin phiên đăng nhập hiện tại
       const currentSession = {
         email: user.email,
         loginTime: new Date().toISOString(),
-        isVerified: user.isVerified
+        isVerified: user.isVerified,
       };
-      await AsyncStorage.setItem('currentUser', JSON.stringify(currentSession));
+      await AsyncStorage.setItem("currentUser", JSON.stringify(currentSession));
 
-      setError('');
-      navigation.replace('HomePage', { email: user.email });
+      setError("");
+      navigation.replace("HomePage", { email: user.email });
     } catch (error) {
-      setError('An error occurred during login. Please try again.');
-      console.error('Login error:', error);
+      setError("An error occurred during login. Please try again.");
+      console.error("Login error:", error);
     }
   };
 
   // Nếu đang tải dữ liệu, hiển thị màn hình trống
   if (isLoading) {
     return (
-      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <Text style={{ color: '#fff' }}>Loading...</Text>
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <Text style={{ color: "#fff" }}>Loading...</Text>
       </View>
     );
   }
@@ -101,14 +117,14 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => navigation.navigate('GettingStarted')}
+        onPress={() => navigation.navigate("GettingStarted")}
       >
-        <Text style={{ color: '#6C2BD7', fontSize: 28 }}>{'<'}</Text>
+        <Text style={{ color: "#6C2BD7", fontSize: 28 }}>{"<"}</Text>
       </TouchableOpacity>
       <GradientText
         text="PayToWin"
         style={styles.gradientTitle}
-        colors={['#14E585', '#9E01B7']}
+        colors={["#14E585", "#9E01B7"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       />
@@ -135,22 +151,40 @@ const LoginScreen = ({ navigation }) => {
             secureTextEntry={!showPassword}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Text style={styles.inputIcon}>{showPassword ? '🙈' : '👁️'}</Text>
+            <Text style={styles.inputIcon}>{showPassword ? "🙈" : "👁️"}</Text>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.rememberRow}>
-        <TouchableOpacity onPress={() => setRemember(!remember)} style={styles.checkboxContainer}>
+        <TouchableOpacity
+          onPress={() => setRemember(!remember)}
+          style={styles.checkboxContainer}
+        >
           <View style={[styles.checkbox, remember && styles.checkboxChecked]}>
             {remember && <View style={styles.checkboxDot} />}
           </View>
           <Text style={styles.rememberText}>Remember me</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.signInButton} activeOpacity={0.8} onPress={handleLogin}>
+      <TouchableOpacity
+        style={styles.signInButton}
+        activeOpacity={0.8}
+        onPress={handleLogin}
+      >
         <Text style={styles.signInButtonText}>Sign in</Text>
       </TouchableOpacity>
-      {error ? <Text style={{ color: '#FF4D4F', textAlign: 'center', marginBottom: 8, fontWeight: 'bold' }}>{error}</Text> : null}
+      {error ? (
+        <Text
+          style={{
+            color: "#FF4D4F",
+            textAlign: "center",
+            marginBottom: 8,
+            fontWeight: "bold",
+          }}
+        >
+          {error}
+        </Text>
+      ) : null}
       <View style={styles.orRow}>
         <View style={styles.orLine} />
         <Text style={styles.orText}>Or continue with</Text>
@@ -158,21 +192,33 @@ const LoginScreen = ({ navigation }) => {
       </View>
       <View style={styles.socialRow}>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('../../assets/Images/Google.png')} style={styles.socialIcon} />
+          <Image
+            source={require("../../assets/Images/Google.png")}
+            style={styles.socialIcon}
+          />
           <Text style={styles.socialLabel}>Google</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('../../assets/Images/facebook.png')} style={styles.socialIcon} />
+          <Image
+            source={require("../../assets/Images/facebook.png")}
+            style={styles.socialIcon}
+          />
           <Text style={styles.socialLabel}>Facebook</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('../../assets/Images/Github.png')} style={styles.socialIcon} />
+          <Image
+            source={require("../../assets/Images/Github.png")}
+            style={styles.socialIcon}
+          />
           <Text style={styles.socialLabel}>Github</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.signupText}>
-        Don't have an account?{' '}
-        <Text style={styles.signupLink} onPress={() => navigation.navigate('SignUp')}>
+        Don't have an account?{" "}
+        <Text
+          style={styles.signupLink}
+          onPress={() => navigation.navigate("SignUp")}
+        >
           Sign up
         </Text>
       </Text>
@@ -183,7 +229,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#181A2A',
+    backgroundColor: "#181A2A",
     paddingHorizontal: 24,
     paddingTop: 64,
   },
@@ -192,31 +238,31 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     width: 32,
     height: 32,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
   gradientTitle: {
     fontSize: 36,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 12,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 24,
   },
   subtitle: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 28,
-    textAlign: 'center',
+    textAlign: "center",
   },
   inputContainer: {
-    width: '100%',
+    width: "100%",
     marginBottom: 12,
   },
   inputBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#23243A',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#23243A",
     borderRadius: 12,
     marginBottom: 16,
     paddingHorizontal: 16,
@@ -225,82 +271,82 @@ const styles = StyleSheet.create({
   inputIcon: {
     fontSize: 18,
     marginRight: 8,
-    color: '#A0A0A0',
+    color: "#A0A0A0",
   },
   input: {
     flex: 1,
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
   rememberRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 24,
   },
   checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   checkbox: {
     width: 22,
     height: 22,
     borderWidth: 2,
-    borderColor: '#14E585',
+    borderColor: "#14E585",
     borderRadius: 6,
     marginRight: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#181A2A',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#181A2A",
   },
   checkboxChecked: {
-    backgroundColor: '#14E585',
+    backgroundColor: "#14E585",
   },
   checkboxDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#181A2A',
+    backgroundColor: "#181A2A",
   },
   rememberText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
   signInButton: {
-    backgroundColor: '#181A2A',
-    borderColor: '#14E585',
+    backgroundColor: "#181A2A",
+    borderColor: "#14E585",
     borderWidth: 2,
     borderRadius: 12,
     paddingVertical: 14,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 24,
   },
   signInButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 20,
   },
   orRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
   },
   orLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#393A50',
+    backgroundColor: "#393A50",
     marginHorizontal: 8,
   },
   orText: {
-    color: '#A0A0A0',
+    color: "#A0A0A0",
     fontSize: 14,
   },
   socialRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 24,
   },
   socialButton: {
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 8,
   },
   socialIcon: {
@@ -309,19 +355,19 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   socialLabel: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 14,
   },
   signupText: {
-    color: '#A0A0A0',
-    textAlign: 'center',
+    color: "#A0A0A0",
+    textAlign: "center",
     fontSize: 14,
   },
   signupLink: {
-    color: '#14E585',
-    fontWeight: 'bold',
+    color: "#14E585",
+    fontWeight: "bold",
   },
 });
 
-export default LoginScreen; 
+export default LoginScreen;

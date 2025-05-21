@@ -1,61 +1,100 @@
-import { useRef, useState, useEffect } from 'react';
-import { View, Image, StyleSheet, FlatList, Dimensions, Animated } from 'react-native';
+import { useEffect, useRef, useState } from "react";
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  Image,
+  StyleSheet,
+  View,
+} from "react-native";
 
-const { width } = Dimensions.get('window');
-const ITEM_WIDTH = width * 0.8; // 80% of screen width
+const { width } = Dimensions.get("window");
+const ITEM_WIDTH = width - 18; // 80% of screen width
 
 // Danh sách 6 ảnh placeholder từ Unsplash
 const images = [
-  { id: '1', local: require('../../assets/Images/Carousel1.jpg'), logo: require('../../assets/Images/Logo1.jpg') },
-  { id: '2', local: require('../../assets/Images/Carousel2.jpg'), logo: require('../../assets/Images/Logo2.jpg') },
-  { id: '3', local: require('../../assets/Images/Carousel3.jpg'), logo: require('../../assets/Images/Logo3.jpg') },
-  { id: '4', local: require('../../assets/Images/Carousel4.jpg'), logo: require('../../assets/Images/Logo4.jpg') },
-  { id: '5', local: require('../../assets/Images/Carousel5.jpg'), logo: require('../../assets/Images/Logo5.jpg') },
-  { id: '6', local: require('../../assets/Images/Carousel6.jpg'), logo: require('../../assets/Images/Logo6.jpg') },
+  {
+    id: "1",
+    local: require("../../assets/Images/Carousel1.jpg"),
+    logo: require("../../assets/Images/Logo1.jpg"),
+  },
+  {
+    id: "2",
+    local: require("../../assets/Images/Carousel2.jpg"),
+    logo: require("../../assets/Images/Logo2.jpg"),
+  },
+  {
+    id: "3",
+    local: require("../../assets/Images/Carousel3.jpg"),
+    logo: require("../../assets/Images/Logo3.jpg"),
+  },
+  {
+    id: "4",
+    local: require("../../assets/Images/Carousel4.jpg"),
+    logo: require("../../assets/Images/Logo4.jpg"),
+  },
+  {
+    id: "5",
+    local: require("../../assets/Images/Carousel5.jpg"),
+    logo: require("../../assets/Images/Logo5.jpg"),
+  },
+  {
+    id: "6",
+    local: require("../../assets/Images/Carousel6.jpg"),
+    logo: require("../../assets/Images/Logo6.jpg"),
+  },
 ];
 
 const Carousel = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
+  const activeIndexRef = useRef(0);
+  const directionRef = useRef(1);
+  const [dotIndex, setDotIndex] = useState(0);
   const flatListRef = useRef(null);
   const scaleAnims = useRef(images.map(() => new Animated.Value(1))).current;
 
-  // Auto-reverse logic
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex(prev => {
-        let next = prev + direction;
-        if (next >= images.length) {
-          setDirection(-1);
-          next = prev - 1;
-        } else if (next < 0) {
-          setDirection(1);
-          next = prev + 1;
-        }
-        flatListRef.current?.scrollToIndex({ index: next, animated: true });
-        return next;
+      let nextIndex = activeIndexRef.current + directionRef.current;
+      if (nextIndex < 0) {
+        nextIndex = 1;
+        directionRef.current = 1;
+        // setDirection(1);
+      } else if (nextIndex >= images.length) {
+        console.log("END");
+        nextIndex = images.length - 2;
+        directionRef.current = -1;
+        // setDirection(-1);
+      }
+      activeIndexRef.current = nextIndex;
+      flatListRef.current?.scrollToIndex({
+        index: nextIndex,
+        animated: true,
       });
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [direction]);
 
-  // Animate scale when active index changes
-  useEffect(() => {
-    scaleAnims.forEach((anim, index) => {
-      Animated.spring(anim, {
-        toValue: activeIndex === index ? 1.2 : 1,
-        useNativeDriver: true,
-        tension: 50,
-        friction: 7,
-      }).start();
-    });
-  }, [activeIndex]);
+      return () => {
+        clearInterval(interval);
+      };
+    }, 3000);
+  }, []);
 
   // Xử lý khi vuốt để cập nhật chỉ số ảnh hiện tại
   const onScroll = (event) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(contentOffsetX / ITEM_WIDTH);
-    setActiveIndex(index);
+
+    scaleAnims.forEach((anim, _index) => {
+      Animated.spring(anim, {
+        toValue: index === _index ? 1.2 : 1,
+        useNativeDriver: true,
+        tension: 70,
+        friction: 4,
+      }).start();
+    });
+
+    setDotIndex(index);
+    activeIndexRef.current = index;
+    // setActiveIndex(index);
+    console.log("SCROLLING");
   };
 
   // Render mỗi ảnh
@@ -73,15 +112,16 @@ const Carousel = () => {
           key={index}
           style={[
             styles.gameBox,
-            activeIndex === index && styles.activeGameBox,
-            { 
-              borderColor: activeIndex === index ? '#1EB1FC' : '#8B9CB6',
+            dotIndex === index && styles.activeGameBox,
+            {
+              borderColor: dotIndex === index ? "#1EB1FC" : "#8B9CB6",
               transform: [{ scale: scaleAnims[index] }],
+              transition: "transform 0.2s ease-in-out",
             },
           ]}
         >
-          <Image 
-            source={item.logo} 
+          <Image
+            source={item.logo}
             style={styles.gameLogo}
             resizeMode="contain"
           />
@@ -100,11 +140,15 @@ const Carousel = () => {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onScroll={onScroll}
+        onMomentumScrollEnd={onScroll}
         snapToInterval={ITEM_WIDTH}
         decelerationRate="fast"
         style={styles.flatList}
-        getItemLayout={(data, index) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index })}
+        getItemLayout={(data, index) => ({
+          length: ITEM_WIDTH,
+          offset: ITEM_WIDTH * index,
+          index,
+        })}
       />
       {renderDots()}
     </View>
@@ -114,32 +158,32 @@ const Carousel = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
   flatList: {
     flexGrow: 0,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   itemContainer: {
     width: ITEM_WIDTH,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 10,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   image: {
     width: ITEM_WIDTH - 20,
     height: 200,
     borderRadius: 10,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   dotsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 10,
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 15,
   },
   gameBox: {
@@ -147,17 +191,17 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 8,
     borderWidth: 2,
-    backgroundColor: 'rgba(139, 156, 182, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(139, 156, 182, 0.1)",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 4,
   },
   activeGameBox: {
     width: 55,
     height: 55,
-    backgroundColor: 'rgba(30, 177, 252, 0.15)',
+    backgroundColor: "rgba(30, 177, 252, 0.15)",
     borderWidth: 3,
-    shadowColor: '#1EB1FC',
+    shadowColor: "#1EB1FC",
     shadowOffset: {
       width: 0,
       height: 0,
@@ -167,10 +211,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   gameLogo: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
 });
 
 export default Carousel;
-

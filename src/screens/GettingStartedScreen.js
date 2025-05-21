@@ -1,6 +1,4 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import GradientText from '../component/GradientText';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const GettingStartedScreen = ({ navigation }) => {
   return (
@@ -11,14 +9,14 @@ const GettingStartedScreen = ({ navigation }) => {
         <Text style={styles.subtitle}>WITH THRILLING NEW ADVENTURES </Text>
       </Text>
       <Image
-        source={require('../../assets/Images/GettingStartedImage.png')}
+        source={require("../../assets/Images/GettingStartedImage.png")}
         style={styles.characterImage}
         resizeMode="contain"
       />
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.8}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.navigate("Login")}
       >
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
@@ -29,23 +27,23 @@ const GettingStartedScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#181A2A',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    backgroundColor: "#181A2A",
+    alignItems: "center",
+    justifyContent: "flex-start",
     paddingTop: 60,
   },
   title: {
-    color: '#2D6FD3',
+    color: "#2D6FD3",
     fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'left',
-    width: '90%',
+    fontWeight: "bold",
+    textAlign: "left",
+    width: "90%",
     marginBottom: 10,
     lineHeight: 28,
   },
   subtitle: {
-    color: '#23254A',
-    fontWeight: 'bold',
+    color: "#23254A",
+    fontWeight: "bold",
   },
   characterImage: {
     width: 420,
@@ -54,21 +52,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 70,
-    alignSelf: 'center',
-    backgroundColor: '#6C2BD7',
+    alignSelf: "center",
+    backgroundColor: "#6C2BD7",
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: '#14E585',
+    borderColor: "#14E585",
     paddingVertical: 14,
     paddingHorizontal: 40,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
 
